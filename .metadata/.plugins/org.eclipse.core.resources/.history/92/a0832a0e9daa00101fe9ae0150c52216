@@ -1,0 +1,73 @@
+package br.itb.projeto.pizzaria3e.service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import br.itb.projeto.pizzaria3e.model.entity.Notificacao;
+import br.itb.projeto.pizzaria3e.model.repository.NotificacaoRepository;
+
+@Service
+public class NotificacaoService {
+
+    private NotificacaoRepository notificacaoRepository;
+
+    public NotificacaoService(NotificacaoRepository notificacaoRepository) {
+        super();
+        this.notificacaoRepository = notificacaoRepository;
+    }
+
+    public Notificacao save(Notificacao notificacao) {
+        if (notificacao.getDataEnvio() == null) {
+            notificacao.setDataEnvio(LocalDateTime.now());
+        }
+        if (notificacao.getStatusNotificacao() == null) {
+            notificacao.setStatusNotificacao("ATIVO");
+        }
+        return notificacaoRepository.save(notificacao);
+    }
+
+    public Notificacao findById(long id) {
+        return notificacaoRepository.findById(id).orElse(null);
+    }
+
+    public List<Notificacao> findAll() {
+        return notificacaoRepository.findAll();
+    }
+
+    public List<Notificacao> findByUsuarioId(long usuarioId) {
+        return notificacaoRepository.findByUsuarioIdOrderByDataEnvioDesc(usuarioId);
+    }
+
+    public List<Notificacao> findNaoLidasByUsuarioId(long usuarioId) {
+        return notificacaoRepository.findByUsuarioIdAndLidaOrderByDataEnvioDesc(usuarioId, false);
+    }
+
+    public long countNaoLidasByUsuarioId(long usuarioId) {
+        return notificacaoRepository.countByUsuarioIdAndLida(usuarioId, false);
+    }
+
+    public Notificacao marcarComoLida(long id) {
+        Notificacao notificacao = findById(id);
+        if (notificacao != null) {
+            notificacao.setLida(true);
+            return save(notificacao);
+        }
+        return null;
+    }
+
+    public Notificacao criarNotificacao(long usuarioId, String titulo, String mensagem, String tipo, Long referenciaId) {
+        Notificacao notificacao = new Notificacao();
+        notificacao.setUsuarioId(usuarioId);
+        notificacao.setTitulo(titulo);
+        notificacao.setMensagem(mensagem);
+        notificacao.setTipo(tipo);
+        notificacao.setReferenciaId(referenciaId);
+        notificacao.setLida(false);
+        notificacao.setDataEnvio(LocalDateTime.now());
+        notificacao.setStatusNotificacao("ATIVO");
+        
+        return save(notificacao);
+    }
+}
