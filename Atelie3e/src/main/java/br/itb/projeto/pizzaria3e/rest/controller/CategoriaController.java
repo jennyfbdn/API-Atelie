@@ -62,5 +62,10 @@ public class CategoriaController {
 		return ResponseEntity.ok().body("Categoria cadastrada com sucesso!");
 	}
 	
+	@PostMapping("/init")
+	public ResponseEntity<?> initCategorias() {
+		categoriaService.initDefaultCategorias();
+		return ResponseEntity.ok().body("Categorias padrão criadas!");
+	}
 	
 }

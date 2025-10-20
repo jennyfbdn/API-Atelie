@@ -4,15 +4,19 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import br.itb.projeto.pizzaria3e.model.entity.Produto;
 import br.itb.projeto.pizzaria3e.rest.exception.ResourceNotFoundException;
@@ -21,6 +25,7 @@ import br.itb.projeto.pizzaria3e.service.ProdutoService;
 
 @RestController
 @RequestMapping("/produto")
+@CrossOrigin(origins = "*")
 public class ProdutoController {
 
 	private ProdutoService produtoService;
@@ -75,14 +80,85 @@ public class ProdutoController {
 		throw new ResourceNotFoundException("Erro ao cadastrar produto!");
 	}
 	
-	@PostMapping("/createComFoto")
-	public ResponseEntity<?> createComFoto(
+	@PostMapping("/criar")
+	public ResponseEntity<?> criar(@RequestBody Produto produto) {
+		Produto _produto = produtoService.save(produto);
+		
+		if(_produto != null) {
+			return ResponseEntity.ok().body("Produto cadastrado com sucesso!");
+		}
+		
+		throw new ResourceNotFoundException("Erro ao cadastrar produto!");
+	}
+	
+	@PostMapping("/upload")
+	public ResponseEntity<?> upload(
 			@RequestParam(required = false) MultipartFile file,
-			@ModelAttribute Produto produto) {
+			@RequestParam String nome,
+			@RequestParam String tipo,
+			@RequestParam String descricao,
+			@RequestParam String codigoBarras,
+			@RequestParam String preco) {
+
+		Produto produto = new Produto();
+		produto.setNome(nome);
+		produto.setTipo(tipo);
+		produto.setDescricao(descricao);
+		produto.setCodigoBarras(codigoBarras);
+		try {
+			produto.setPreco(Double.parseDouble(preco));
+		} catch (Exception e) {
+			produto.setPreco(0.0);
+		}
 
 		produtoService.createComFoto(file, produto);
+		return ResponseEntity.ok("Produto criado!");
+	}
+	
+	@PutMapping("/alterar/{id}")
+	public ResponseEntity<?> alterar(@PathVariable long id, @RequestBody Produto produto) {
+		Produto _produto = produtoService.update(id, produto);
+		
+		if(_produto != null) {
+			return ResponseEntity.ok().body("Produto atualizado com sucesso!");
+		}
+		
+		throw new ResourceNotFoundException("Erro ao atualizar produto!");
+	}
+	
+	@PostMapping("/update/{id}")
+	public ResponseEntity<?> update(
+			@PathVariable long id,
+			@RequestParam(required = false) MultipartFile file,
+			@RequestParam String nome,
+			@RequestParam String tipo,
+			@RequestParam String descricao,
+			@RequestParam String codigoBarras,
+			@RequestParam String preco) {
 
-		return ResponseEntity.ok()
-				.body(new MessageResponse("Produto cadastrado com sucesso!"));
+		Produto produto = new Produto();
+		produto.setNome(nome);
+		produto.setTipo(tipo);
+		produto.setDescricao(descricao);
+		produto.setCodigoBarras(codigoBarras);
+		try {
+			produto.setPreco(Double.parseDouble(preco));
+		} catch (Exception e) {
+			produto.setPreco(0.0);
+		}
+
+		produtoService.updateComFoto(id, file, produto);
+		return ResponseEntity.ok("Produto atualizado!");
+	}
+	
+	@PutMapping("/editar/{id}")
+	public ResponseEntity<?> editar(@PathVariable long id, @RequestBody Produto produto) {
+		Produto _produto = produtoService.update(id, produto);
+		
+		if(_produto != null) {
+			return ResponseEntity.ok().body("Produto atualizado com sucesso!");
+		}
+		
+		throw new ResourceNotFoundException("Erro ao atualizar produto!");
 	}
 }

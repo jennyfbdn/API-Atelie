@@ -1,0 +1,44 @@
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import '../node_modules/bootstrap-icons/font/bootstrap-icons.min.css';
+
+html, body {
+  background-color: #FFFFFF !important;
+  color: #000000;
+}
+
+* {
+  background-color: inherit;
+}
+
+.container-fluid, .container {
+  background-color: #FFFFFF !important;
+}
+
+.card {
+  background-color: #F8F9FA !important;
+  border: 1px solid #000000;
+}
+
+.sidebar {
+  background-color: #FFFFFF !important;
+}
+
+.btn-primary, .btn-secondary, .btn {
+  background-color: rgba(0, 0, 0, 1) !important;
+  border-color: rgba(0, 0, 0, 1) !important;
+  color: #FFFFFF !important;
+}
+
+.btn-primary:hover, .btn-secondary:hover, .btn:hover {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  border-color: rgba(0, 0, 0, 0.8) !important;
+  color: #FFFFFF !important;
+}
+
+section {
+  background-color: #FFFFFF !important;
+}
+
+.bg-light-white, .bg-secondary-white {
+  background-color: #F8F9FA !important;
+}

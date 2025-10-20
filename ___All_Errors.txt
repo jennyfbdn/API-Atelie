@@ -1,0 +1,6 @@
+CorrelationId: 4675d6aa-c497-4cac-ba48-b3e2829e8547
+UTC DateTime: 10/20/2025 11:08:18
+
+The following files/folders have not been downloaded
+0. Site-Atelie-main/.metadata/.lock
+1. Site-Atelie-main/Atelie3e/.metadata/.lock

@@ -41,7 +41,25 @@ public class CategoriaService {
 		return _categoria;
 	}
 	
-	
+	@Transactional
+	public void initDefaultCategorias() {
+		if (categoriaRepository.count() == 0) {
+			Categoria geral = new Categoria();
+			geral.setNome("Geral");
+			geral.setIcone("📦");
+			categoriaRepository.save(geral);
+			
+			Categoria feminino = new Categoria();
+			feminino.setNome("Feminino");
+			feminino.setIcone("👗");
+			categoriaRepository.save(feminino);
+			
+			Categoria masculino = new Categoria();
+			masculino.setNome("Masculino");
+			masculino.setIcone("👔");
+			categoriaRepository.save(masculino);
+		}
+	}
 
 }
 

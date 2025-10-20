@@ -56,4 +56,30 @@ public class PromocaoService {
 		
 		return promocaoRepository.save(promocao);
 	}
+	
+	@Transactional
+	public Promocao updateComFoto(long id, MultipartFile file, Promocao promocaoAtualizada) {
+		Optional<Promocao> promocaoExistente = promocaoRepository.findById(id);
+		
+		if (promocaoExistente.isPresent()) {
+			Promocao promocao = promocaoExistente.get();
+			promocao.setNome(promocaoAtualizada.getNome());
+			promocao.setDescricao(promocaoAtualizada.getDescricao());
+			promocao.setPreco(promocaoAtualizada.getPreco());
+			promocao.setDesconto(promocaoAtualizada.getDesconto());
+			
+			// Atualiza foto se fornecida
+			if (file != null && file.getSize() > 0) {
+				try {
+					promocao.setFoto(file.getBytes());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			return promocaoRepository.save(promocao);
+		}
+		
+		return null;
+	}
 }

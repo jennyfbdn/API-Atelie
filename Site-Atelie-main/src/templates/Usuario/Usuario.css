@@ -1,0 +1,33 @@
+.form-perfil {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #FFFFFF;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.form-perfil img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 1rem;
+    display: block;
+    border: 3px solid #000000;
+}
+
+.shadow-custom {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.btn-custom {
+    border-radius: 25px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+}
+
+.alert-custom {
+    border-radius: 10px;
+    border: none;
+}

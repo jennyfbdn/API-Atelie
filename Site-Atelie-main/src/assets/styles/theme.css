@@ -1,0 +1,52 @@
+:root {
+  --primary-black: #000000;
+  --secondary-black: #333333;
+  --accent-black: rgba(0, 0, 0, 1);
+  --pure-white: #FFFFFF;
+  --sidebar-white: #FFFFFF;
+  --light-white: #ffffff;
+  --secondary-white: #ffffff;
+}
+
+.bg-primary-black { background-color: var(--primary-black) !important; }
+.bg-secondary-black { background-color: var(--secondary-black) !important; }
+.bg-accent-black { background-color: var(--accent-black) !important; }
+.bg-pure-white { background-color: var(--pure-white) !important; }
+.bg-light-white { background-color: var(--light-white) !important; }
+.bg-secondary-white { background-color: var(--secondary-white) !important; }
+
+.text-primary-black { color: var(--primary-black) !important; }
+.text-secondary-black { color: var(--secondary-black) !important; }
+.text-accent-black { color: var(--accent-black) !important; }
+.text-pure-white { color: var(--pure-white) !important; }
+
+.btn-primary {
+  background-color: var(--accent-black);
+  border-color: var(--accent-black);
+  color: var(--pure-white);
+}
+
+.btn-primary:hover {
+  background-color: #333333;
+  border-color: #333333;
+  color: var(--pure-white);
+}
+
+.card-elegant {
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.card-elegant:hover {
+  transform: translateY(-5px);
+}
+
+.navbar-elegant {
+  background-color: var(--accent-black) !important;
+}
+
+.sidebar-elegant {
+  background-color: #FFFFFF !important;
+  border-right: 2px solid var(--primary-black);
+}

@@ -1,0 +1,30 @@
+.sidebar {
+    display: block;
+    align-items: center;
+    justify-content: space-around;
+    padding: 5px;
+    margin-top: 10px;
+    width: 200px;
+    height: 98.5vh;
+    background-color: #FFFFFF;
+    border: solid #000000 1px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar a {
+    padding: 20px 10px;
+    color: rgba(0, 0, 0, 1) !important;
+    text-decoration: none;
+}
+
+.sidebar a:hover {
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #FFFFFF;
+    color: rgba(0, 0, 0, 1) !important;
+    text-align: center;
+    margin: 2px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}

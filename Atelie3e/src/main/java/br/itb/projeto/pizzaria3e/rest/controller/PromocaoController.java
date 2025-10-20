@@ -67,4 +67,19 @@ public class PromocaoController {
 				.body(new MessageResponse("Promoção cadastrada com sucesso!"));
 	}
 	
+	@PostMapping("/alterar/{id}")
+	public ResponseEntity<?> alterar(
+			@PathVariable long id,
+			@RequestParam(required = false) MultipartFile file,
+			@ModelAttribute Promocao promocao) {
+
+		Promocao _promocao = promocaoService.updateComFoto(id, file, promocao);
+		
+		if(_promocao != null) {
+			return ResponseEntity.ok().body(new MessageResponse("Promoção atualizada com sucesso!"));
+		}
+		
+		throw new ResourceNotFoundException("Erro ao atualizar promoção!");
+	}
+	
 }

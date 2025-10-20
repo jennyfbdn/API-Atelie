@@ -1,0 +1,57 @@
+package br.itb.projeto.pizzaria3e.rest.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.itb.projeto.pizzaria3e.model.entity.Promocao;
+import br.itb.projeto.pizzaria3e.service.PromocaoService;
+
+@RestController
+@RequestMapping("/simple")
+@CrossOrigin(origins = "*")
+public class PromocaoSimpleController {
+
+    private final PromocaoService promocaoService;
+
+    public PromocaoSimpleController(PromocaoService promocaoService) {
+        this.promocaoService = promocaoService;
+    }
+
+    @PostMapping("/promocao")
+    public ResponseEntity<?> criar(@RequestBody Promocao promocao) {
+        try {
+            Promocao _promocao = promocaoService.createComFoto(null, promocao);
+            if (_promocao != null) {
+                return ResponseEntity.ok("Promoção criada com sucesso!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().body("Erro ao criar promoção");
+    }
+
+    @PutMapping("/promocao/{id}")
+    public ResponseEntity<?> atualizar(@PathVariable long id, @RequestBody Promocao promocao) {
+        System.out.println("=== ATUALIZANDO PROMOCAO ID: " + id + " ===");
+        System.out.println("Nome: " + promocao.getNome());
+        System.out.println("Desconto: " + promocao.getDesconto());
+        
+        try {
+            Promocao _promocao = promocaoService.updateComFoto(id, null, promocao);
+            if (_promocao != null) {
+                System.out.println("Promoção atualizada com sucesso!");
+                return ResponseEntity.ok("Promoção atualizada com sucesso!");
+            }
+        } catch (Exception e) {
+            System.out.println("ERRO: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().body("Erro ao atualizar promoção");
+    }
+}
