@@ -69,6 +69,14 @@ public class ProdutoController {
 		return new ResponseEntity<List<Produto>>(produtos, HttpStatus.OK);
 	}
 	
+	@GetMapping("/findByCategoria/{categoriaId}")
+	public ResponseEntity<List<Produto>> findByCategoria(@PathVariable long categoriaId){
+		
+		List<Produto> produtos = produtoService.findByCategoria(categoriaId);
+		
+		return new ResponseEntity<List<Produto>>(produtos, HttpStatus.OK);
+	}
+	
 	@PostMapping("/create")
 	public ResponseEntity<?> create(@RequestBody Produto produto) {
 		Produto _produto = produtoService.save(produto);
@@ -113,6 +121,36 @@ public class ProdutoController {
 
 		produtoService.createComFoto(file, produto);
 		return ResponseEntity.ok("Produto criado!");
+	}
+	
+	@PostMapping("/createComFoto")
+	public ResponseEntity<?> createComFoto(
+			@RequestParam(required = false) MultipartFile file,
+			@RequestParam String nome,
+			@RequestParam String tipo,
+			@RequestParam String descricao,
+			@RequestParam String codigoBarras,
+			@RequestParam String preco,
+			@RequestParam(required = false) String categoriaId) {
+
+		Produto produto = new Produto();
+		produto.setNome(nome);
+		produto.setTipo(tipo);
+		produto.setDescricao(descricao);
+		produto.setCodigoBarras(codigoBarras);
+		try {
+			produto.setPreco(Double.parseDouble(preco));
+		} catch (Exception e) {
+			produto.setPreco(0.0);
+		}
+
+		Produto _produto = produtoService.createComFoto(file, produto);
+		
+		if(_produto != null) {
+			return ResponseEntity.ok().body("Produto cadastrado com sucesso!");
+		}
+		
+		throw new ResourceNotFoundException("Erro ao cadastrar produto!");
 	}
 	
 	@PutMapping("/alterar/{id}")

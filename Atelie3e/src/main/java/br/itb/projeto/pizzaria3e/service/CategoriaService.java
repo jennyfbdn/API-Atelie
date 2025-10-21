@@ -37,8 +37,25 @@ public class CategoriaService {
 	
 	@Transactional
 	public Categoria save(Categoria categoria) {
+		categoria.setStatusCategoria("ATIVO");
 		Categoria _categoria = categoriaRepository.save(categoria);
 		return _categoria;
+	}
+	
+	@Transactional
+	public Categoria update(long id, Categoria categoriaAtualizada) {
+		Optional<Categoria> categoriaExistente = categoriaRepository.findById(id);
+		
+		if (categoriaExistente.isPresent()) {
+			Categoria categoria = categoriaExistente.get();
+			categoria.setNome(categoriaAtualizada.getNome());
+			categoria.setDescricao(categoriaAtualizada.getDescricao());
+			categoria.setIcone(categoriaAtualizada.getIcone());
+			
+			return categoriaRepository.save(categoria);
+		}
+		
+		return null;
 	}
 	
 	@Transactional
@@ -46,17 +63,23 @@ public class CategoriaService {
 		if (categoriaRepository.count() == 0) {
 			Categoria geral = new Categoria();
 			geral.setNome("Geral");
+			geral.setDescricao("Categoria geral");
 			geral.setIcone("📦");
+			geral.setStatusCategoria("ATIVO");
 			categoriaRepository.save(geral);
 			
 			Categoria feminino = new Categoria();
 			feminino.setNome("Feminino");
+			feminino.setDescricao("Roupas femininas");
 			feminino.setIcone("👗");
+			feminino.setStatusCategoria("ATIVO");
 			categoriaRepository.save(feminino);
 			
 			Categoria masculino = new Categoria();
 			masculino.setNome("Masculino");
+			masculino.setDescricao("Roupas masculinas");
 			masculino.setIcone("👔");
+			masculino.setStatusCategoria("ATIVO");
 			categoriaRepository.save(masculino);
 		}
 	}

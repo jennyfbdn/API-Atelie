@@ -11,4 +11,5 @@ import br.itb.projeto.pizzaria3e.model.entity.Produto;
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 	
 	List<Produto> findByTipo(String tipo);
+	List<Produto> findByCategoriaId(Long categoriaId);
 }

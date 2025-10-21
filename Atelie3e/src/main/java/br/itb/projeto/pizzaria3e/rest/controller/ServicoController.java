@@ -4,8 +4,12 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +19,7 @@ import br.itb.projeto.pizzaria3e.service.ServicoService;
 
 @RestController
 @RequestMapping("/servico")
+@CrossOrigin(origins = "*")
 public class ServicoController {
 
 	private ServicoService servicoService;
@@ -48,6 +53,28 @@ public class ServicoController {
 		List<Servico> servicos = servicoService.findAll();
 		
 		return new ResponseEntity<List<Servico>>(servicos, HttpStatus.OK);
+	}
+	
+	@PostMapping("/create")
+	public ResponseEntity<?> create(@RequestBody Servico servico) {
+		Servico _servico = servicoService.save(servico);
+		
+		if(_servico != null) {
+			return ResponseEntity.ok().body("Serviço cadastrado com sucesso!");
+		}
+		
+		throw new ResourceNotFoundException("Erro ao cadastrar serviço!");
+	}
+	
+	@PutMapping("/update/{id}")
+	public ResponseEntity<?> update(@PathVariable long id, @RequestBody Servico servico) {
+		Servico _servico = servicoService.update(id, servico);
+		
+		if(_servico != null) {
+			return ResponseEntity.ok().body("Serviço atualizado com sucesso!");
+		}
+		
+		throw new ResourceNotFoundException("Erro ao atualizar serviço!");
 	}
 	
 }

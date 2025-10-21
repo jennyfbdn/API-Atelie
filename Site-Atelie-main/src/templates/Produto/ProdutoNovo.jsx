@@ -1,6 +1,6 @@
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import logo from '../../assets/images/primobolan.png';
+import logo from '../../assets/images/logo.png';
 import { useEffect, useRef, useState } from "react"
 import ProdutoService from "../../services/ProdutoService"
 import ImageUploaderModal from "../../components/ImageUploader/ImageUploaderModal"
@@ -108,14 +108,16 @@ const ProdutoNovo = () => {
     return (
         <div className="d-flex">
             <Sidebar />
-            <div className="p-3 w-100" style={{ backgroundColor: '#fff6ed' }}>
+            <div className="p-3 w-100" style={{ backgroundColor: 'var(--background-color)' }}>
                 <Header
                     goTo={'/promocao'}
                     title={'Novo Produto'}
                     logo={logo}
                 />
-                <section className="m-2 p-2">
-                    <form className="row g-3 m-3 p-3 border shadow rounded-2" onSubmit={handleSubmit} >
+                <div className="container">
+                    <div className="card p-4">
+                        <h4 className="mb-4">Cadastrar Novo Produto</h4>
+                        <form className="row g-3" onSubmit={handleSubmit} >
                         {!successful && (
                             <>
                                 <div className="col-md-6">
@@ -123,7 +125,8 @@ const ProdutoNovo = () => {
                                     <input type="text" className="form-control" id="inputNome"
                                         name="nome"
                                         value={formData.nome || ""}
-                                        onChange={handleChange} />
+                                        onChange={handleChange}
+                                        required />
                                 </div>
                                 <div className="col-md-2">
                                     <label htmlFor="inputCodigo" className="form-label mb-1 fw-bold">Código:</label>
@@ -134,10 +137,11 @@ const ProdutoNovo = () => {
                                 </div>
                                 <div className="col-md-2">
                                     <label htmlFor="inputPreco" className="form-label mb-1 fw-bold">Preço:</label>
-                                    <input type="text" className="form-control" id="inputPreco"
+                                    <input type="number" step="0.01" className="form-control" id="inputPreco"
                                         name="preco"
                                         value={formData.preco || ""}
-                                        onChange={handleChange} />
+                                        onChange={handleChange}
+                                        required />
                                 </div>
                                 <div className="col-md-2">
                                     <label htmlFor="inputTipo" className="form-label mb-1 fw-bold">Tipo:</label>
@@ -151,18 +155,21 @@ const ProdutoNovo = () => {
                                     <textarea rows={5} className="form-control" id="inputDescricao"
                                         name="descricao"
                                         value={formData.descricao || ""}
-                                        onChange={handleChange} >
+                                        onChange={handleChange}
+                                        required >
                                     </textarea>
                                 </div>
 
                                 <div className="col-md-2">
                                     <label htmlFor="inputCategoria" className="form-label mb-1 fw-bold">Categoria:</label>
-                                    <select id="inputCategoria" className="form-select" defaultValue={0}
+                                    <select id="inputCategoria" className="form-select" 
                                         name="categoria"
-                                        onChange={(e) => handleChange(e)}>
+                                        value={formData.categoria || "1"}
+                                        onChange={(e) => handleChange(e)}
+                                        required>
 
-                                        <option value={0} disabled>
-                                            Selecione a categoria...
+                                        <option value="1">
+                                            Roupas
                                         </option>
 
                                         {categorias?.map((categoria) => (
@@ -196,8 +203,9 @@ const ProdutoNovo = () => {
                                 </div>
                             </div>
                         )}
-                    </form>
-                </section>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     )

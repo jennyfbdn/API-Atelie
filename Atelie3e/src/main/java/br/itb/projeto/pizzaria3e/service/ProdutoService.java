@@ -46,6 +46,11 @@ public class ProdutoService {
 		return produtos;
 	}
 	
+	public List<Produto> findByCategoria(long categoriaId){
+		List<Produto> produtos = produtoRepository.findByCategoriaId(categoriaId);
+		return produtos;
+	}
+	
 	@Transactional
 	public Produto save(Produto produto) {
 		produto.setStatusProduto("ATIVO");

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logo from '../../assets/images/primobolan.png';
+import logo from '../../assets/images/logo.png';
 import UsuarioService from "../../services/UsuarioService";
 import './Login.css';
 
@@ -62,48 +62,82 @@ const Login = () => {
     };
 
     return (
-        <div className="container">
-            <form action="" className="login-form" onSubmit={handleSubmit}>
+        <div className="login-container">
+            <div className="login-form fade-in">
                 <div className="login-logo">
                     <img src={logo} alt="logo" />
+                    <h3 className="login-title">Ateliê Pano Fino</h3>
+                    <p className="login-subtitle">Painel Administrativo</p>
                 </div>
-                <div className="mb-3">
-                    <label htmlFor="email" className="form-label mb-0 fw-bold">Email:</label>
-                    <input type="email" id="email" className="form-control text-center fw-medium shadow"
-                        name="email"
-                        value={formData.email || ""}
-                        onChange={handleChange} />
-                </div>
-                <div>
-                    <label htmlFor="password" className="form-label mb-0 fw-bold">Senha:</label>
-                    <input type="password" id="password" className="form-control text-center fw-medium shadow"
-                        name="password"
-                        value={formData.password || ""}
-                        onChange={handleChange} />
-                </div>
-                <div className="d-flex justify-content-between mt-1">
-                    <p className="fw-bold fst-italic opacity-75">Não tem conta?
-                        <Link to={'/cadastro'}> Cadastre-se aqui.</Link>
-                    </p>
-                    <p className="fw-bold fst-italic opacity-75 me-1">Esqueceu a senha?
-                        <Link to={'/forgotpass'}> Clique aqui.</Link>
-                    </p>
-                </div>
-                <div className="text-center p-2 rounded-2">
+                
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="email" className="form-label">Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            className="form-control"
+                            name="email"
+                            placeholder="Digite seu email"
+                            value={formData.email || ""}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    
+                    <div className="form-group">
+                        <label htmlFor="password" className="form-label">Senha</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            className="form-control"
+                            name="password"
+                            placeholder="Digite sua senha"
+                            value={formData.password || ""}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    
+                    <div className="alert alert-info">
+                        <div className="d-flex align-items-center mb-2">
+                            <i className="bi bi-info-circle me-2"></i>
+                            <strong>Credenciais de Teste</strong>
+                        </div>
+                        <small>
+                            <strong>Email:</strong> fulano@email.com.br<br/>
+                            <strong>Senha:</strong> 12345678
+                        </small>
+                    </div>
+                    
                     {message && (
-                        <div className="fw-bold fs-5 text-danger">
-                            <span>{message}</span>
+                        <div className="alert alert-danger">
+                            <div className="d-flex align-items-center">
+                                <i className="bi bi-exclamation-triangle me-2"></i>
+                                <small>{message}</small>
+                            </div>
                         </div>
                     )}
-                </div>
 
-                <div className="d-flex justify-content-around mb-3 mt-2">
-                    <button className="btn btn-light fw-medium shadow" type="button"
-                        onClick={backto}>Cancelar</button>
-                    <button className="btn btn-dark fw-medium shadow" type="submit">
-                        Entrar</button>
+                    <div className="d-grid gap-2">
+                        <button className="btn btn-primary" type="submit">
+                            <i className="bi bi-box-arrow-in-right me-2"></i>
+                            Entrar
+                        </button>
+                        <button className="btn btn-outline-secondary" type="button" onClick={backto}>
+                            <i className="bi bi-arrow-left me-2"></i>
+                            Voltar
+                        </button>
+                    </div>
+                </form>
+                
+                <div className="login-help">
+                    <small>
+                        Não tem conta? <Link to={'/cadastro'}>Cadastre-se aqui</Link><br/>
+                        Esqueceu a senha? <Link to={'/forgotpass'}>Clique aqui</Link>
+                    </small>
                 </div>
-            </form>
+            </div>
         </div>
     )
 }

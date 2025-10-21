@@ -2,6 +2,8 @@ import { Routes, Route } from 'react-router-dom';
 import App from '../templates/App/App'
 import Home from '../templates/Home/Home';
 import Login from '../templates/Login/Login';
+import Landing from '../templates/Landing/Landing';
+import Cliente from '../templates/Cliente/Cliente';
 import Produto from '../templates/Produto/Produto';
 import Promocao from '../templates/Promocao/Promocao';
 import Usuario from '../templates/Usuario/Usuario';
@@ -20,6 +22,7 @@ import NovaMensagem from '../templates/Mensagem/NovaMensagem';
 import MeusServicos from '../templates/Servico/MeusServicos';
 import SolicitarServico from '../templates/Servico/SolicitarServico';
 import NovoServico from '../templates/Servico/NovoServico';
+import NovoServicoPage from '../templates/NovoServico/NovoServico';
 import VisualizarServico from '../templates/Servico/VisualizarServico';
 import NovoProduto from '../templates/Produto/NovoProduto';
 import ProdutoNovo from '../templates/Produto/ProdutoNovo';
@@ -32,13 +35,17 @@ import UsuarioEditar from '../templates/Usuario/UsuarioEditar';
 import VerProdutos from '../templates/Produto/VerProdutos';
 import VerServicos from '../templates/Servico/VerServicos';
 import CategoriaDetalhes from '../templates/Produto/CategoriaDetalhes';
+import AdminAgendamentos from '../pages/AdminAgendamentos';
+import AdminEncomendas from '../pages/AdminEncomendas';
+import AdminServicos from '../pages/AdminServicos';
 
 import ProtectedRoute from './ProtectedRoute';
 
 const AppRoutes = () => {
     return (
         <Routes>
-            <Route path={"/"} element={<Login />} />
+            <Route path={"/"} element={<Landing />} />
+            <Route path={"/cliente"} element={<Cliente />} />
             <Route path={"/home"} element={<Home /> } />
             <Route path={"/login"} element={<Login /> } />
             <Route path={"/cadastro"} element={<Cadastro /> } />
@@ -57,7 +64,7 @@ const AppRoutes = () => {
             <Route path={"/servicos"} element={<ServicosLista /> } />
             <Route path={"/mensagens-bot"} element={<Mensagens /> } />
             <Route path={"/conversa/:tipo"} element={<VisualizarConversa /> } />
-            <Route path={"/novo-servico"} element={<ProtectedRoute adminOnly={true}><NovoServico /></ProtectedRoute>} />
+            <Route path={"/novo-servico"} element={<ProtectedRoute adminOnly={true}><NovoServicoPage /></ProtectedRoute>} />
             <Route path={"/servico/:id"} element={<VisualizarServico /> } />
             <Route path={"/novo-produto"} element={<ProtectedRoute adminOnly={true}><NovoProduto /></ProtectedRoute>} />
             <Route path={"/produto-novo"} element={<ProtectedRoute adminOnly={true}><ProdutoNovo /></ProtectedRoute>} />
@@ -74,6 +81,9 @@ const AppRoutes = () => {
             <Route path={"/ver-produtos"} element={<VerProdutos /> } />
             <Route path={"/ver-servicos"} element={<VerServicos /> } />
             <Route path={"/categoria/:id"} element={<CategoriaDetalhes /> } />
+            <Route path={"/admin/agendamentos"} element={<ProtectedRoute adminOnly={true}><AdminAgendamentos /></ProtectedRoute>} />
+            <Route path={"/admin/encomendas"} element={<ProtectedRoute adminOnly={true}><AdminEncomendas /></ProtectedRoute>} />
+            <Route path={"/admin/servicos"} element={<ProtectedRoute adminOnly={true}><AdminServicos /></ProtectedRoute>} />
 
         </Routes>
     )

@@ -29,6 +29,13 @@ const ServicosLista = () => {
                     title={'Lista de Serviços'}
                     logo={logo}
                 />
+                <div className="d-flex justify-content-between align-items-center mb-4">
+                    <h3 className="mb-0">Gerenciar Serviços</h3>
+                    <Link to="/novo-servico" className="btn btn-primary">
+                        <i className="bi bi-plus-circle me-2"></i>
+                        Adicionar Serviço
+                    </Link>
+                </div>
                 <div className="table-container">
                     <div className="table-search-section">
                         <form action="">

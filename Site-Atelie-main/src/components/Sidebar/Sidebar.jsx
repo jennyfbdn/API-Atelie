@@ -1,43 +1,81 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './Sidebar.css';
-import UsuarioService from '../../services/UsuarioService';
-import imgProfile from '../../assets/images/primobolan.png';
-import '../../assets/styles/theme.css';
+import imgProfile from '../../assets/images/logo.png';
 
 const Sidebar = () => {
-
-    //const usuario = UsuarioService.getCurrentUser();
-   // const tipoAcesso = localStorage.getItem("tipoAcesso") || 'USUARIO';
-    //const isAdmin = tipoAcesso === 'ADMIN';
-
+    const location = useLocation();
     const userJson = localStorage.getItem("user");
     const user = JSON.parse(userJson || '{}');
-    const isAdmin = user.nivelAcesso == 'ADMIN';
+    const isAdmin = user.nivelAcesso === 'ADMIN';
+
+    const isActive = (path) => {
+        return location.pathname === path || location.pathname.startsWith(path + '/');
+    };
 
     return(
-        <div className="sidebar sidebar-elegant">
-            <div className='m-1'>
-                <img src={imgProfile} alt="" className="img-fluid" width={80} />
-                <span className="fw-bold ms-1">Atelie Pano Fino</span>
+        <div className="sidebar">
+            <div className='sidebar-header'>
+                <img src={imgProfile} alt="Logo" className="img-fluid" />
+                <h5>Ateliê Pano Fino</h5>
+                <p>{isAdmin ? 'Painel Administrativo' : 'Área do Cliente'}</p>
             </div>
-            <nav className="nav flex-column">
-                <Link to={'/home'} className='nav-link'>Home</Link>
-                
+            
+            <nav className="sidebar-nav">
                 {isAdmin ? (
+                    // MENU ADMINISTRATIVO
                     <>
-                        <Link to={'/produto'} className='nav-link'>Produto</Link>
-                        <Link to={'/promocao'} className='nav-link'>Promoção</Link>
-                        <Link to={'/usuario'} className='nav-link'>Usuário</Link>
+                        <Link to={'/home'} className={isActive('/home') ? 'active' : ''}>
+                            <i className="bi bi-speedometer2"></i>
+                            Dashboard
+                        </Link>
+                        <Link to={'/produtos'} className={isActive('/produto') ? 'active' : ''}>
+                            <i className="bi bi-box"></i>
+                            Produtos
+                        </Link>
+                        <Link to={'/servicos'} className={isActive('/servico') ? 'active' : ''}>
+                            <i className="bi bi-tools"></i>
+                            Serviços
+                        </Link>
+                        <Link to={'/promocoes'} className={isActive('/promocao') ? 'active' : ''}>
+                            <i className="bi bi-percent"></i>
+                            Promoções
+                        </Link>
+                        <Link to={'/usuarios'} className={isActive('/usuario') ? 'active' : ''}>
+                            <i className="bi bi-people"></i>
+                            Usuários
+                        </Link>
+                        <hr />
+                        <Link to={'/cliente'}>
+                            <i className="bi bi-eye"></i>
+                            Visualizar como Cliente
+                        </Link>
                     </>
                 ) : (
+                    // MENU CLIENTE
                     <>
-                        <Link to={'/ver-produtos'} className='nav-link'>Produtos</Link>
-                        <Link to={'/promocoes'} className='nav-link'>Promoções</Link>
-                        <Link to={'/ver-servicos'} className='nav-link'>Serviços</Link>
+                        <Link to={'/cliente'} className={isActive('/cliente') ? 'active' : ''}>
+                            <i className="bi bi-grid"></i>
+                            Catálogo
+                        </Link>
+                        <Link to={'/ver-servicos'} className={isActive('/ver-servicos') ? 'active' : ''}>
+                            <i className="bi bi-tools"></i>
+                            Serviços
+                        </Link>
+                        <hr />
+                        <Link to={'/'}>
+                            <i className="bi bi-arrow-left"></i>
+                            Voltar ao Início
+                        </Link>
                     </>
                 )}
-                <Link to={'/login'} className='nav-link'>Sair</Link>
             </nav>
+            
+            <div className="sidebar-footer">
+                <Link to={'/login'} onClick={() => localStorage.clear()}>
+                    <i className="bi bi-box-arrow-right"></i>
+                    Sair
+                </Link>
+            </div>
         </div>
     )
 }

@@ -17,11 +17,11 @@ const signup = (nome, email, password) => {
     });
 };
 
-const signin = async (email, senha) => {
+const signin = async (email, password) => {
     const response = await http.mainInstance
         .post(API_URL + "login", {
             email,
-            senha,
+            senha: password,
         });
     if (response.data) {
         localStorage.setItem("user", JSON.stringify(response.data));

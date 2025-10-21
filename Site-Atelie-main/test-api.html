@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste API</title>
+</head>
+<body>
+    <h1>Teste de Conexão com API</h1>
+    <button onclick="testarAPI()">Testar Conexão</button>
+    <button onclick="testarLogin()">Testar Login</button>
+    <div id="resultado"></div>
+
+    <script>
+        async function testarAPI() {
+            try {
+                const response = await fetch('http://localhost:8080/test/ping');
+                const data = await response.text();
+                document.getElementById('resultado').innerHTML = `<p>Sucesso: ${data}</p>`;
+            } catch (error) {
+                document.getElementById('resultado').innerHTML = `<p>Erro: ${error.message}</p>`;
+            }
+        }
+
+        async function testarLogin() {
+            try {
+                const response = await fetch('http://localhost:8080/usuario/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'teste@teste.com',
+                        senha: '123456'
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('resultado').innerHTML = `<p>Login OK: ${JSON.stringify(data)}</p>`;
+                } else {
+                    document.getElementById('resultado').innerHTML = `<p>Erro Login: ${response.status} - ${response.statusText}</p>`;
+                }
+            } catch (error) {
+                document.getElementById('resultado').innerHTML = `<p>Erro: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

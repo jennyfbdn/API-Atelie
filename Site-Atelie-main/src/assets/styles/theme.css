@@ -1,11 +1,41 @@
 :root {
-  --primary-black: #000000;
-  --secondary-black: #333333;
-  --accent-black: rgba(0, 0, 0, 1);
-  --pure-white: #FFFFFF;
-  --sidebar-white: #FFFFFF;
-  --light-white: #ffffff;
-  --secondary-white: #ffffff;
+  /* Cores: #f7e5df, preto e branco */
+  --primary-color: #fcf2ef;
+  --secondary-color: #000000;
+  --accent-color: #f5e8e3;
+  
+  /* Cores de fundo */
+  --background-color: #ffffff;
+  --surface-color: #ffffff;
+  --card-background: #ffffff;
+  
+  /* Cores de texto */
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --text-light: #666666;
+  
+  /* Cores de estado */
+  --success-color: #000000;
+  --warning-color: #000000;
+  --error-color: #000000;
+  --info-color: #000000;
+  
+  /* Cores de borda */
+  --border-color: #e0e0e0;
+  --divider-color: #f0f0f0;
+  
+  /* Sombras */
+  --shadow-elegant: 0 8px 20px rgba(0, 0, 0, 0.1);
+  --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.06);
+  
+  /* Compatibilidade */
+  --primary-black: var(--secondary-color);
+  --secondary-black: var(--text-secondary);
+  --accent-black: var(--secondary-color);
+  --pure-white: var(--surface-color);
+  --sidebar-white: var(--surface-color);
+  --light-white: var(--background-color);
+  --secondary-white: var(--surface-color);
 }
 
 .bg-primary-black { background-color: var(--primary-black) !important; }
@@ -21,32 +51,152 @@
 .text-pure-white { color: var(--pure-white) !important; }
 
 .btn-primary {
-  background-color: var(--accent-black);
-  border-color: var(--accent-black);
-  color: var(--pure-white);
+  background: var(--secondary-color);
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 12px 24px;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-soft);
+  letter-spacing: 0.5px;
 }
 
 .btn-primary:hover {
-  background-color: #333333;
-  border-color: #333333;
-  color: var(--pure-white);
+  background: #333333;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-elegant);
+  color: white;
+}
+
+.btn-outline-primary {
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--secondary-color);
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 12px 24px;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  background: var(--primary-color);
+  color: var(--secondary-color);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+.btn-elegant {
+  background: var(--primary-color);
+  border: none;
+  color: var(--secondary-color);
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 12px 24px;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-soft);
+  letter-spacing: 0.5px;
+}
+
+.btn-elegant:hover {
+  background: var(--accent-color);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-elegant);
+  color: var(--secondary-color);
 }
 
 .card-elegant {
   border: none;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  box-shadow: var(--shadow-elegant);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,248,248,0.95) 100%);
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-elegant::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--primary-color));
 }
 
 .card-elegant:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
 }
 
 .navbar-elegant {
-  background-color: var(--accent-black) !important;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color)) !important;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .sidebar-elegant {
-  background-color: #FFFFFF !important;
-  border-right: 2px solid var(--primary-black);
+  background-color: var(--surface-color) !important;
+  border-right: 1px solid var(--border-color);
+}
+
+/* Novos estilos para combinar com o mobile */
+.form-control {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px 16px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(244, 221, 212, 0.25);
+}
+
+.table {
+  background-color: var(--card-background);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.table th {
+  background-color: var(--background-color);
+  color: var(--text-primary);
+  font-weight: 600;
+  border: none;
+  padding: 16px;
+}
+
+.table td {
+  border: none;
+  padding: 16px;
+  color: var(--text-primary);
+}
+
+.alert {
+  border: none;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.alert-success {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: var(--success-color);
+}
+
+.alert-danger {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: var(--error-color);
+}
+
+.alert-warning {
+  background-color: rgba(255, 152, 0, 0.1);
+  color: var(--warning-color);
+}
+
+.alert-info {
+  background-color: rgba(33, 150, 243, 0.1);
+  color: var(--info-color);
 }
