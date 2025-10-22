@@ -1,41 +1,40 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from '../../assets/images/logo.png';
 import ProdutoService from "../../services/ProdutoService";
-import CategoriaService from "../../services/CategoriaService";
+import UsuarioService from "../../services/UsuarioService";
 import ImageGallery from "../../components/ImageGallery/ImageGallery";
 
 const Cliente = () => {
     const _dbRecords = useRef(true);
+    const navigate = useNavigate();
     const [produtos, setProdutos] = useState([]);
-    const [categorias, setCategorias] = useState([]);
-    const [filtroCategoria, setFiltroCategoria] = useState('todos');
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (_dbRecords.current) {
-            Promise.all([
-                ProdutoService.findAll(),
-                CategoriaService.findAll()
-            ]).then(([produtosRes, categoriasRes]) => {
-                setProdutos(produtosRes.data || []);
-                setCategorias(categoriasRes.data || []);
-                setLoading(false);
-            }).catch((error) => {
-                setProdutos([]);
-                setCategorias([]);
-                setLoading(false);
-                console.log(error);
-            })
+            ProdutoService.findAll()
+                .then((response) => {
+                    setProdutos(response.data || []);
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    setProdutos([]);
+                    setLoading(false);
+                    console.log(error);
+                });
         }
         return () => {
             _dbRecords.current = false;
         };
     }, []);
 
-    const produtosFiltrados = filtroCategoria === 'todos' 
-        ? produtos 
-        : produtos.filter(produto => produto.categoria?.id == filtroCategoria);
+    const handleLogout = () => {
+        UsuarioService.logout();
+        navigate('/');
+    };
+
+
 
     return (
         <div style={{backgroundColor: 'var(--background-color)', minHeight: '100vh'}}>
@@ -62,10 +61,14 @@ const Cliente = () => {
                             <i className="bi bi-tools me-2"></i>
                             <span className="d-none d-md-inline">Nossos </span>Serviços
                         </Link>
-                        <Link to="/" className="btn btn-primary btn-sm">
+                        <Link to="/" className="btn btn-outline-secondary btn-sm">
                             <i className="bi bi-house me-2"></i>
                             <span className="d-none d-md-inline">Início</span>
                         </Link>
+                        <button onClick={handleLogout} className="btn btn-danger btn-sm">
+                            <i className="bi bi-box-arrow-right me-2"></i>
+                            <span className="d-none d-md-inline">Sair</span>
+                        </button>
                     </div>
                 </div>
             </nav>
@@ -79,45 +82,6 @@ const Cliente = () => {
             </div>
 
             <div className="container py-5">
-                {/* Filtros */}
-                <div className="row mb-4">
-                    <div className="col-12">
-                        <div className="card card-elevated p-4">
-                            <div className="row align-items-center">
-                                <div className="col-md-6 mb-3 mb-md-0">
-                                    <h6 className="mb-2">Filtrar por Categoria</h6>
-                                    <div className="d-flex flex-wrap gap-2">
-                                        <button 
-                                            className={`btn ${filtroCategoria === 'todos' ? 'btn-primary' : 'btn-outline-primary'} btn-sm transition-fast`}
-                                            onClick={() => setFiltroCategoria('todos')}
-                                        >
-                                            <i className="bi bi-grid me-2"></i>
-                                            Todos
-                                        </button>
-                                        {categorias.map(categoria => (
-                                            <button 
-                                                key={categoria.id}
-                                                className={`btn ${filtroCategoria == categoria.id ? 'btn-primary' : 'btn-outline-primary'} btn-sm transition-fast`}
-                                                onClick={() => setFiltroCategoria(categoria.id)}
-                                            >
-                                                <i className="bi bi-tag me-2"></i>
-                                                {categoria.nome}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-                                <div className="col-md-6">
-                                    <div className="text-md-end">
-                                        <small className="text-muted">
-                                            {produtosFiltrados.length} produto{produtosFiltrados.length !== 1 ? 's' : ''} encontrado{produtosFiltrados.length !== 1 ? 's' : ''}
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 {/* Grid de Produtos */}
                 {loading ? (
                     <div className="text-center py-5">
@@ -128,7 +92,7 @@ const Cliente = () => {
                     </div>
                 ) : (
                     <div className="product-grid">
-                    {produtosFiltrados?.map((produto, index) => (
+                    {produtos?.map((produto, index) => (
                         <div className="product-card slide-up" key={produto.id} style={{animationDelay: `${index * 0.1}s`}}>
                             <div className="position-relative">
                                 <img 
@@ -186,7 +150,7 @@ const Cliente = () => {
                     </div>
                 )}
 
-                {!loading && produtosFiltrados.length === 0 && (
+                {!loading && produtos.length === 0 && (
                     <div className="row">
                         <div className="col-12">
                             <ImageGallery />
@@ -201,13 +165,6 @@ const Cliente = () => {
                                         Confira nossa galeria enquanto cadastramos os produtos.
                                     </p>
                                     <div className="d-flex justify-content-center gap-2">
-                                        <button 
-                                            className="btn btn-outline-primary"
-                                            onClick={() => setFiltroCategoria('todos')}
-                                        >
-                                            <i className="bi bi-arrow-clockwise me-2"></i>
-                                            Ver Todos
-                                        </button>
                                         <Link to="/" className="btn btn-primary">
                                             <i className="bi bi-house me-2"></i>
                                             Voltar ao Início

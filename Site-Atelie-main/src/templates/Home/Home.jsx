@@ -110,20 +110,7 @@ const Home = () => {
                                     </div>
                                 </div>
                                 
-                                <div className="col-lg-3 col-md-6">
-                                    <div className="luxury-card text-center p-4 h-100 slide-up" style={{animationDelay: '0.1s'}}>
-                                        <div className="icon-wrapper floating-element">
-                                            <i className="bi bi-palette"></i>
-                                        </div>
-                                        <h5 className="mb-3">Serviços</h5>
-                                        <p className="text-muted mb-4">Solicitações dos clientes</p>
-                                        <div className="d-grid gap-2">
-                                            <Link to="/servicos" className="btn btn-outline-primary btn-sm">
-                                                <i className="bi bi-list me-2"></i>Ver Solicitações
-                                            </Link>
-                                        </div>
-                                    </div>
-                                </div>
+                                
                                 
                                 <div className="col-lg-3 col-md-6">
                                     <div className="luxury-card text-center p-4 h-100 slide-up" style={{animationDelay: '0.2s'}}>
@@ -158,38 +145,9 @@ const Home = () => {
 
                             {/* Segunda linha de cards */}
                             <div className="row g-4 mb-5">
-                                <div className="col-lg-3 col-md-6">
-                                    <div className="luxury-card text-center p-4 h-100 slide-up" style={{animationDelay: '0.4s'}}>
-                                        <div className="icon-wrapper floating-element">
-                                            <i className="bi bi-gear"></i>
-                                        </div>
-                                        <h5 className="mb-3">Serviços Admin</h5>
-                                        <p className="text-muted mb-4">Gerenciar serviços</p>
-                                        <div className="d-grid gap-2">
-                                            <Link to="/admin/servicos" className="btn btn-outline-primary btn-sm">
-                                                <i className="bi bi-list me-2"></i>Ver Serviços
-                                            </Link>
-                                        </div>
-                                    </div>
-                                </div>
+                
                                 
-                                <div className="col-lg-3 col-md-6">
-                                    <div className="luxury-card text-center p-4 h-100 slide-up" style={{animationDelay: '0.5s'}}>
-                                        <div className="icon-wrapper floating-element">
-                                            <i className="bi bi-star"></i>
-                                        </div>
-                                        <h5 className="mb-3">Promoções</h5>
-                                        <p className="text-muted mb-4">Ofertas especiais</p>
-                                        <div className="d-grid gap-2">
-                                            <Link to="/promocoes" className="btn btn-outline-primary btn-sm">
-                                                <i className="bi bi-tag me-2"></i>Ver Promoções
-                                            </Link>
-                                            <Link to="/nova-promocao" className="btn btn-elegant btn-sm">
-                                                <i className="bi bi-plus-circle me-2"></i>Nova Promoção
-                                            </Link>
-                                        </div>
-                                    </div>
-                                </div>
+
                                 
                                 <div className="col-lg-3 col-md-6">
                                     <div className="luxury-card text-center p-4 h-100 slide-up" style={{animationDelay: '0.6s'}}>
@@ -234,17 +192,7 @@ const Home = () => {
                                         <p className="text-muted mb-0 small">Produtos Ativos</p>
                                     </div>
                                 </div>
-                                <div className="col-lg-3 col-md-6">
-                                    <div className="card glass-effect text-center p-4 transition-normal">
-                                        <div className="d-flex align-items-center justify-content-center mb-3">
-                                            <div className="icon-wrapper" style={{width: '48px', height: '48px', fontSize: '1.2rem'}}>
-                                                <i className="bi bi-percent"></i>
-                                            </div>
-                                        </div>
-                                        <h2 className="text-gradient mb-2">0</h2>
-                                        <p className="text-muted mb-0 small">Promoções Ativas</p>
-                                    </div>
-                                </div>
+
                                 <div className="col-lg-3 col-md-6">
                                     <div className="card glass-effect text-center p-4 transition-normal">
                                         <div className="d-flex align-items-center justify-content-center mb-3">

@@ -10,6 +10,7 @@ import CategoriaService from "../../services/CategoriaService";
 
 const EditarProduto = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const usuario = UsuarioService.getCurrentUser();
     const _dbRecords = useRef(true);
     const [categorias, setCategorias] = useState([]);
@@ -108,11 +109,14 @@ const EditarProduto = () => {
         setMessage("");
         setSuccessful(false);
 
-        ProdutoService.alterar(file, id, produto).then(
+        ProdutoService.alterar(id, produto).then(
             (response) => {
                 setMessage(response.data.message);
                 setSuccessful(true);
                 console.log(produto);
+                setTimeout(() => {
+                navigate('/produto');
+            }, 2000);
             }, (error) => {
                 const resMessage =
                     (error.response &&
@@ -123,25 +127,26 @@ const EditarProduto = () => {
 
                 setMessage(resMessage);
                 setSuccessful(false);
+                setTimeout(() => {
+                navigate('/produto');
+            }, 2000);
             }
         )
     }
 
-    const handleExcluir = () => {
-        if (window.confirm('Tem certeza que deseja excluir este produto?')) {
-            const newProduto = {
-                nome: '',
-                descricao: '',
-                preco: '',
-                codigoBarras: '',
-                tipo: '',
-            };
-            setProduto(newProduto);
-            setFile("");
-            setChosenImage();
-            alert('Formulário limpo!');
+    const handleExcluir = async () => {
+        try {
+            const result = await ProdutoService.deletar(id);
+            setMessage('Produto excluído com sucesso');
+            setSuccessful(true);
+            setTimeout(() => {
+                navigate('/produto');
+            }, 2000);
+        } catch (error) {
+            setMessage('Erro ao excluir produto');
+            setSuccessful(false);
         }
-    };
+   };
 
     return (
         <div className="d-flex">
@@ -231,7 +236,8 @@ const EditarProduto = () => {
                                 <ImageUploaderModal
                                     setFile={setChosenFile}
                                     setImage={setImage}
-                                    chosenImage={chosenImage} />
+                                    chosenImage={chosenImage}
+                                    onChange={handleChange} />
                             </div>
                         </div>
 

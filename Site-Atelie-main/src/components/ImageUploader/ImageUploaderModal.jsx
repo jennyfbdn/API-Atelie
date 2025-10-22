@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const ImageUploaderModal = ({ setFile, setImage, chosenImage }) => {
+const   ImageUploaderModal = ({ setFile, setImage, chosenImage }) => {
     const [currentFile, setCurrentFile] = useState(null);
     const [previewImage, setPreviewImage] = useState(null);
 

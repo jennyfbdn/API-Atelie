@@ -54,36 +54,16 @@ const createComFoto = (file, data) => {
   return http.multipartInstance.post(API_URL + "createComFoto", formData);
 };
 
-const alterar = (file, id, data) => {
-  const formData = new FormData();
-
-  formData.append('file', file);
-  formData.append('nome', data.nome);
-  formData.append('descricao', data.descricao);
-  formData.append('preco', data.preco);
-  
-  if (data.categoria.id === undefined) { // SE O USUÁRIO ALTEROU A "Categoria"
-    formData.append('categoria', data.categoria.toString());
-  } else { // SE O USUÁRIO NÃO ALTEROU A "Categoria"
-    formData.append('categoria', data.categoria.id);
-  }
-
-/*
-  for (const key of formData.entries()) {
-    console.log(key[0] + ', ' + key[1]);
-  } 
-*/
-  return http.multipartInstance.put(API_URL + `alterar/${id}`, formData);
+const alterar = (id, data) => {
+  return http.mainInstance.put(API_URL + `alterar/${id}`, data);
 };
 
 
-const inativar = (id) => {
-  return http.multipartInstance.put(API_URL + `inativar/${id}`);
+
+const deletar = (id) => {
+  return http.multipartInstance.delete(API_URL + `deletar/${id}`);
 };
 
-const reativar = (id) => {
-  return http.multipartInstance.put(API_URL + `reativar/${id}`);
-};
 
 const addCardapio = (id) => {
   return http.multipartInstance.put(API_URL + `addCardapio/${id}`);
@@ -101,8 +81,7 @@ const ProdutoService = {
   createSemFoto,
   createComFoto,
   alterar,
-  inativar,
-  reativar,
+  deletar,
   addCardapio,
   findAllCardapio
 };

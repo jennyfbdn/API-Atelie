@@ -8,7 +8,7 @@ const AdminNavigation = () => {
         { path: '/admin/produtos', label: 'Produtos', icon: '📦' },
         { path: '/admin/agendamentos', label: 'Agendamentos', icon: '📅' },
         { path: '/admin/encomendas', label: 'Encomendas', icon: '🛍️' },
-        { path: '/admin/servicos', label: 'Serviços', icon: '⚙️' },
+
     ];
 
     return (

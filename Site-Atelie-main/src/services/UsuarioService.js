@@ -49,7 +49,7 @@ const create = data => {
 };
 
 const update = (id, data) => {
-    return http.mainInstance.put(API_URL + `update/${id}`, data);
+    return http.mainInstance.put(API_URL + `editar/${id}`, data);
 };
 
 const inativar = (id) => {

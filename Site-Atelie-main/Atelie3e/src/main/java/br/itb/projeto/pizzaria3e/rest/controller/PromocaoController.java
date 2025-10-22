@@ -59,12 +59,61 @@ public class PromocaoController {
 	@PostMapping("/create")
 	public ResponseEntity<?> create(
 			@RequestParam(required = false) MultipartFile file,
-			@ModelAttribute Promocao promocao) {
+			@RequestParam String nome,
+			@RequestParam String descricao,
+			@RequestParam double preco,
+			@RequestParam double desconto,
+			@RequestParam(required = false) Long usuario) {
+
+		Promocao promocao = new Promocao();
+		promocao.setNome(nome);
+		promocao.setDescricao(descricao);
+		promocao.setPreco(preco);
+		promocao.setDesconto(desconto);
 
 		promocaoService.createComFoto(file, promocao);
 
 		return ResponseEntity.ok()
 				.body(new MessageResponse("Promoção cadastrada com sucesso!"));
+	}
+	
+	@PostMapping("/alterar/{id}")
+	public ResponseEntity<?> alterar(
+			@PathVariable long id,
+			@RequestParam(required = false) MultipartFile file,
+			@RequestParam String nome,
+			@RequestParam String descricao,
+			@RequestParam double preco,
+			@RequestParam double desconto,
+			@RequestParam(required = false) Long usuario) {
+
+		Promocao promocao = new Promocao();
+		promocao.setNome(nome);
+		promocao.setDescricao(descricao);
+		promocao.setPreco(preco);
+		promocao.setDesconto(desconto);
+
+		Promocao promocaoAlterada = promocaoService.alterarComFoto(id, file, promocao);
+		
+		if(promocaoAlterada != null) {
+			return ResponseEntity.ok()
+					.body(new MessageResponse("Promoção alterada com sucesso!"));
+		} else {
+			throw new ResourceNotFoundException("Promoção não encontrada!");
+		}
+	}
+	
+	@PostMapping("/inativar/{id}")
+	public ResponseEntity<?> inativar(@PathVariable long id) {
+		
+		Promocao promocaoInativada = promocaoService.inativar(id);
+		
+		if(promocaoInativada != null) {
+			return ResponseEntity.ok()
+					.body(new MessageResponse("Promoção inativada com sucesso!"));
+		} else {
+			throw new ResourceNotFoundException("Promoção não encontrada!");
+		}
 	}
 	
 }

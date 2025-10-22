@@ -32,17 +32,14 @@ const Sidebar = () => {
                             <i className="bi bi-box"></i>
                             Produtos
                         </Link>
-                        <Link to={'/servicos'} className={isActive('/servico') ? 'active' : ''}>
-                            <i className="bi bi-tools"></i>
-                            Serviços
-                        </Link>
-                        <Link to={'/promocoes'} className={isActive('/promocao') ? 'active' : ''}>
-                            <i className="bi bi-percent"></i>
-                            Promoções
-                        </Link>
+                        
                         <Link to={'/usuarios'} className={isActive('/usuario') ? 'active' : ''}>
                             <i className="bi bi-people"></i>
                             Usuários
+                        </Link>
+                        <Link to={'/admin/agendamentos'} className={isActive('/admin/agendamentos') ? 'active' : ''}>
+                            <i className="bi bi-calendar-check"></i>
+                            Agendamentos
                         </Link>
                         <hr />
                         <Link to={'/cliente'}>
@@ -71,9 +68,12 @@ const Sidebar = () => {
             </nav>
             
             <div className="sidebar-footer">
-                <Link to={'/login'} onClick={() => localStorage.clear()}>
+                <Link to={'/login'} onClick={() => {
+                    localStorage.clear();
+                    window.location.href = '/login';
+                }}>
                     <i className="bi bi-box-arrow-right"></i>
-                    Sair
+                    Sair da Conta
                 </Link>
             </div>
         </div>

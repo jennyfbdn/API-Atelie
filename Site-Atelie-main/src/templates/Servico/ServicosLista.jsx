@@ -3,20 +3,58 @@ import { useState, useEffect } from "react";
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import logo from '../../assets/images/primobolan.png';
+import AgendamentoService from "../../services/AgendamentoService";
 import '../../assets/styles/tables.css';
 
 const ServicosLista = () => {
     const [servicos, setServicos] = useState([]);
+    const [agendamentos, setAgendamentos] = useState([]);
     const [busca, setBusca] = useState('');
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const servicosSalvos = JSON.parse(localStorage.getItem('servicosCadastrados') || '[]');
-        setServicos(servicosSalvos);
+        carregarDados();
     }, []);
 
-    const servicosFiltrados = servicos.filter(servico => 
+    const carregarDados = async () => {
+        try {
+            // Carregar serviços locais
+            const servicosSalvos = JSON.parse(localStorage.getItem('servicosCadastrados') || '[]');
+            
+            // Carregar agendamentos do mobile
+            const response = await AgendamentoService.getAll();
+            const agendamentosData = response.data || [];
+            
+            setServicos(servicosSalvos);
+            setAgendamentos(agendamentosData);
+        } catch (error) {
+            console.error('Erro ao carregar dados:', error);
+            setAgendamentos([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Combinar serviços locais e agendamentos do mobile
+    const todosServicos = [
+        ...servicos,
+        ...agendamentos.map(agendamento => ({
+            id: `AGD-${agendamento.id}`,
+            nome: agendamento.servico,
+            cliente: agendamento.usuarioNome,
+            descricao: agendamento.descricao,
+            dataEntrada: agendamento.dataAgendamento,
+            dataEntrega: agendamento.dataAgendamento,
+            preco: agendamento.orcamento?.toFixed(2) || '0.00',
+            status: agendamento.status,
+            tipo: 'agendamento'
+        }))
+    ];
+
+    const servicosFiltrados = todosServicos.filter(servico => 
         servico.nome?.toLowerCase().includes(busca.toLowerCase()) ||
-        servico.id?.toLowerCase().includes(busca.toLowerCase()) ||
+        servico.id?.toString().toLowerCase().includes(busca.toLowerCase()) ||
+        servico.cliente?.toLowerCase().includes(busca.toLowerCase()) ||
         servico.descricao?.toLowerCase().includes(busca.toLowerCase())
     );
 
@@ -30,11 +68,24 @@ const ServicosLista = () => {
                     logo={logo}
                 />
                 <div className="d-flex justify-content-between align-items-center mb-4">
-                    <h3 className="mb-0">Gerenciar Serviços</h3>
-                    <Link to="/novo-servico" className="btn btn-primary">
-                        <i className="bi bi-plus-circle me-2"></i>
-                        Adicionar Serviço
-                    </Link>
+                    <div>
+                        <h3 className="mb-0">Serviços e Agendamentos</h3>
+                        <small className="text-muted">Inclui agendamentos do mobile</small>
+                    </div>
+                    <div>
+                        <button 
+                            className="btn btn-outline-secondary me-2" 
+                            onClick={carregarDados}
+                            disabled={loading}
+                        >
+                            <i className="bi bi-arrow-clockwise me-2"></i>
+                            {loading ? 'Carregando...' : 'Atualizar'}
+                        </button>
+                        <Link to="/novo-servico" className="btn btn-primary">
+                            <i className="bi bi-plus-circle me-2"></i>
+                            Adicionar Serviço
+                        </Link>
+                    </div>
                 </div>
                 <div className="table-container">
                     <div className="table-search-section">
@@ -74,22 +125,60 @@ const ServicosLista = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {servicosFiltrados?.map((servico, index) => (
-                                <tr key={index}>
-                                    <th scope="row">{index + 1}</th>
-                                    <td>{servico.id}</td>
-                                    <td>{servico.nome}</td>
-                                    <td>{servico.dataEntrada}</td>
-                                    <td>{servico.dataEntrega}</td>
-                                    <td>R$ {servico.preco}</td>
-                                    <td>
-                                        <Link to={`/servico/${index + 1}`} className="btn table-action-btn">
-                                            <i className="bi bi-folder2-open"></i>
-                                            Abrir
-                                        </Link>
+                            {loading ? (
+                                <tr>
+                                    <td colSpan="7" className="text-center py-4">
+                                        <div className="spinner-border text-primary" role="status">
+                                            <span className="visually-hidden">Carregando...</span>
+                                        </div>
                                     </td>
                                 </tr>
-                            ))}
+                            ) : servicosFiltrados.length === 0 ? (
+                                <tr>
+                                    <td colSpan="7" className="text-center py-4 text-muted">
+                                        Nenhum serviço ou agendamento encontrado
+                                    </td>
+                                </tr>
+                            ) : (
+                                servicosFiltrados.map((servico, index) => (
+                                    <tr key={`${servico.tipo || 'servico'}-${servico.id || index}`}>
+                                        <th scope="row">
+                                            {servico.tipo === 'agendamento' && (
+                                                <span className="badge bg-info me-1">Mobile</span>
+                                            )}
+                                            {servico.id || (index + 1)}
+                                        </th>
+                                        <td>{servico.cliente || servico.id || 'N/A'}</td>
+                                        <td>
+                                            {servico.nome}
+                                            {servico.status && (
+                                                <span className={`badge ms-2 ${
+                                                    servico.status === 'PENDENTE' ? 'bg-warning' :
+                                                    servico.status === 'CONFIRMADO' ? 'bg-success' : 'bg-secondary'
+                                                }`}>
+                                                    {servico.status}
+                                                </span>
+                                            )}
+                                        </td>
+                                        <td>{servico.dataEntrada || servico.dataAgendamento || 'N/A'}</td>
+                                        <td>{servico.dataEntrega || servico.dataAgendamento || 'N/A'}</td>
+                                        <td>R$ {servico.preco || '0.00'}</td>
+                                        <td>
+                                            {servico.tipo === 'agendamento' ? (
+                                                <span className="text-muted">
+                                                    <i className="bi bi-calendar-check me-1"></i>
+                                                    Agendamento
+                                                </span>
+                                            ) : (
+                                                <Link to={`/servico/${servico.id || (index + 1)}`} className="btn table-action-btn">
+                                                    <i className="bi bi-folder2-open"></i>
+                                                    Abrir
+                                                </Link>
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 </div>

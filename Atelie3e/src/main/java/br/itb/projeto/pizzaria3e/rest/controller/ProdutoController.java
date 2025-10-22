@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,13 +20,14 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 
 import br.itb.projeto.pizzaria3e.model.entity.Produto;
+import br.itb.projeto.pizzaria3e.model.entity.Usuario;
 import br.itb.projeto.pizzaria3e.rest.exception.ResourceNotFoundException;
 import br.itb.projeto.pizzaria3e.rest.response.MessageResponse;
 import br.itb.projeto.pizzaria3e.service.ProdutoService;
 
 @RestController
 @RequestMapping("/produto")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = 	"*")
 public class ProdutoController {
 
 	private ProdutoService produtoService;
@@ -60,6 +62,18 @@ public class ProdutoController {
 		
 		return new ResponseEntity<List<Produto>>(produtos, HttpStatus.OK);
 	}
+	
+	@DeleteMapping("/deletar/{id}")
+	public ResponseEntity<?> deletarProduto(@PathVariable long id) {
+		boolean deletado = produtoService.deletarProduto(id);
+
+		if (deletado) {
+			return ResponseEntity.ok().body("Produto deletado com sucesso.");
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
 	
 	@GetMapping("/findByTipo/{tipo}")
 	public ResponseEntity<List<Produto>> findByTipo(@PathVariable String tipo){
@@ -199,4 +213,6 @@ public class ProdutoController {
 		
 		throw new ResourceNotFoundException("Erro ao atualizar produto!");
 	}
+	
+	
 }

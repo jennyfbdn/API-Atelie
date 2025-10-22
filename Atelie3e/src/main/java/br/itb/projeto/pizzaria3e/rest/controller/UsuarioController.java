@@ -263,6 +263,18 @@ public class UsuarioController {
 		
 		return ResponseEntity.badRequest().body("Erro ao enviar email de teste");
 	}
+	
+	@PutMapping("/editar/{id}")
+	public ResponseEntity<?> editarUsuario(@PathVariable long id, @RequestBody Usuario usuario) {
+		Usuario usuarioAtualizado = usuarioService.editarUsuario(id, usuario);
+		
+		if (usuarioAtualizado != null) {
+			return ResponseEntity.ok(usuarioAtualizado);
+		}
+		
+		return ResponseEntity.notFound().build();
+	}
+
 
 }
 

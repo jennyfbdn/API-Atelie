@@ -1,6 +1,6 @@
 import axios from 'axios';
 //const API_URL =  "https://projeto.com.br/"; //remote(produção)
-const API_URL = "http://127.0.0.1:8080/"; //local(desenvolvimento)
+const API_URL = "http://localhost:8080/"; //local(desenvolvimento)
 
 //Texto somente
 const mainInstance = axios.create({
@@ -37,9 +37,7 @@ mainInstance.interceptors.response.use(
 //Arquivos e texto
 const multipartInstance = axios.create({
     baseURL: API_URL,
-    headers: {
-        "Content-type": "multipart/form-data"
-    }
+    // Não definir Content-Type para multipart - axios define automaticamente com boundary
 });
 
 const httpCommom = {

@@ -1,0 +1,103 @@
+package br.itb.projeto.pizzaria3e.rest.controller;
+
+import java.io.IOException;
+import java.util.Map;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import br.itb.projeto.pizzaria3e.model.entity.Produto;
+import br.itb.projeto.pizzaria3e.service.ProdutoService;
+import jakarta.servlet.http.HttpServletRequest;
+
+@RestController
+@RequestMapping("/api")
+@CrossOrigin(origins = "*")
+public class FileUploadController {
+
+    private final ProdutoService produtoService;
+
+    public FileUploadController(ProdutoService produtoService) {
+        this.produtoService = produtoService;
+    }
+
+    @PostMapping("/**")
+    public ResponseEntity<?> handleAnyRequest(HttpServletRequest request) throws IOException {
+        
+        String path = request.getRequestURI();
+        
+        if (path.contains("/produto-create")) {
+            return createProduto(request);
+        } else if (path.contains("/produto-update")) {
+            String[] parts = path.split("/");
+            long id = Long.parseLong(parts[parts.length - 1]);
+            return updateProduto(request, id);
+        }
+        
+        return ResponseEntity.ok("Endpoint não encontrado");
+    }
+    
+    private ResponseEntity<?> createProduto(HttpServletRequest request) throws IOException {
+        if (request instanceof MultipartHttpServletRequest) {
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+            
+            MultipartFile file = multipartRequest.getFile("file");
+            String nome = multipartRequest.getParameter("nome");
+            String tipo = multipartRequest.getParameter("tipo");
+            String descricao = multipartRequest.getParameter("descricao");
+            String codigoBarras = multipartRequest.getParameter("codigoBarras");
+            String preco = multipartRequest.getParameter("preco");
+            
+            Produto produto = new Produto();
+            produto.setNome(nome);
+            produto.setTipo(tipo);
+            produto.setDescricao(descricao);
+            produto.setCodigoBarras(codigoBarras);
+            try {
+                produto.setPreco(Double.parseDouble(preco));
+            } catch (Exception e) {
+                produto.setPreco(0.0);
+            }
+            
+            produtoService.createComFoto(file, produto);
+            return ResponseEntity.ok("Produto criado com sucesso!");
+        }
+        
+        return ResponseEntity.badRequest().body("Erro no upload");
+    }
+    
+    private ResponseEntity<?> updateProduto(HttpServletRequest request, long id) throws IOException {
+        if (request instanceof MultipartHttpServletRequest) {
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+            
+            MultipartFile file = multipartRequest.getFile("file");
+            String nome = multipartRequest.getParameter("nome");
+            String tipo = multipartRequest.getParameter("tipo");
+            String descricao = multipartRequest.getParameter("descricao");
+            String codigoBarras = multipartRequest.getParameter("codigoBarras");
+            String preco = multipartRequest.getParameter("preco");
+            
+            Produto produto = new Produto();
+            produto.setNome(nome);
+            produto.setTipo(tipo);
+            produto.setDescricao(descricao);
+            produto.setCodigoBarras(codigoBarras);
+            try {
+                produto.setPreco(Double.parseDouble(preco));
+            } catch (Exception e) {
+                produto.setPreco(0.0);
+            }
+            
+            produtoService.updateComFoto(id, file, produto);
+            return ResponseEntity.ok("Produto atualizado com sucesso!");
+        }
+        
+        return ResponseEntity.badRequest().body("Erro no update");
+    }
+}

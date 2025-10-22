@@ -2,14 +2,13 @@ import { Routes, Route } from 'react-router-dom';
 import App from '../templates/App/App'
 import Home from '../templates/Home/Home';
 import Login from '../templates/Login/Login';
+import LoginAdmin from '../templates/Login/LoginAdmin';
+import LoginUsuario from '../templates/Login/LoginUsuario';
 import Landing from '../templates/Landing/Landing';
 import Cliente from '../templates/Cliente/Cliente';
 import Produto from '../templates/Produto/Produto';
-import Promocao from '../templates/Promocao/Promocao';
 import Usuario from '../templates/Usuario/Usuario';
 import MensagensLista from '../templates/Mensagem/MensagensLista';
-
-import PromocoesLista from '../templates/Promocao/PromocoesLista';
 import UsuariosLista from '../templates/Usuario/UsuariosLista';
 import ServicosLista from '../templates/Servico/ServicosLista';
 import LoginAlterarSenha from '../templates/Login/LoginAlterarSenha';
@@ -27,8 +26,7 @@ import VisualizarServico from '../templates/Servico/VisualizarServico';
 import NovoProduto from '../templates/Produto/NovoProduto';
 import ProdutoNovo from '../templates/Produto/ProdutoNovo';
 import ProdutosLista from '../templates/Produto/ProdutosLista';
-import NovaPromocao from '../templates/Promocao/NovaPromocao';
-import EditarPromocao from '../templates/Promocao/EditarPromocao';
+
 import EditarProduto from '../templates/Produto/EditarProduto';
 import NovoUsuario from '../templates/Usuario/NovoUsuario';
 import UsuarioEditar from '../templates/Usuario/UsuarioEditar';
@@ -48,18 +46,20 @@ const AppRoutes = () => {
             <Route path={"/cliente"} element={<Cliente />} />
             <Route path={"/home"} element={<Home /> } />
             <Route path={"/login"} element={<Login /> } />
+            <Route path={"/login-admin"} element={<LoginAdmin /> } />
+            <Route path={"/login-usuario"} element={<LoginUsuario /> } />
             <Route path={"/cadastro"} element={<Cadastro /> } />
             <Route path={"/forgotpass"} element={<ForgotPassword /> } />
 
             <Route path={"/alterarsenha/:id"} element={<LoginAlterarSenha /> } />
 
             <Route path={"/produto"} element={<ProtectedRoute adminOnly={true}><Produto /></ProtectedRoute>} />
-            <Route path={"/promocao"} element={<ProtectedRoute adminOnly={true}><Promocao /></ProtectedRoute>} />
+
             <Route path={"/usuario"} element={<ProtectedRoute adminOnly={true}><Usuario /></ProtectedRoute>} />
 
             <Route path={"/mensagens"} element={<MensagensLista /> } />
             <Route path={"/produtos"} element={<ProdutosLista /> } />
-            <Route path={"/promocoes"} element={<PromocoesLista /> } />
+
             <Route path={"/usuarios"} element={<ProtectedRoute adminOnly={true}><UsuariosLista /></ProtectedRoute>} />
             <Route path={"/servicos"} element={<ServicosLista /> } />
             <Route path={"/mensagens-bot"} element={<Mensagens /> } />
@@ -68,8 +68,7 @@ const AppRoutes = () => {
             <Route path={"/servico/:id"} element={<VisualizarServico /> } />
             <Route path={"/novo-produto"} element={<ProtectedRoute adminOnly={true}><NovoProduto /></ProtectedRoute>} />
             <Route path={"/produto-novo"} element={<ProtectedRoute adminOnly={true}><ProdutoNovo /></ProtectedRoute>} />
-            <Route path={"/nova-promocao"} element={<ProtectedRoute adminOnly={true}><NovaPromocao /></ProtectedRoute>} />
-            <Route path={"/editar-promocao"} element={<ProtectedRoute adminOnly={true}><EditarPromocao /></ProtectedRoute>} />
+
             <Route path={"/editar-produto/:id"} element={<ProtectedRoute adminOnly={true}><EditarProduto /></ProtectedRoute>} />
             <Route path={"/novo-usuario"} element={<ProtectedRoute adminOnly={true}><NovoUsuario /></ProtectedRoute>} />
             <Route path={"/usuario-editar/:id"} element={<ProtectedRoute adminOnly={true}><UsuarioEditar /></ProtectedRoute>} />

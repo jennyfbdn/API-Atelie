@@ -1,6 +1,8 @@
 package br.itb.projeto.pizzaria3e.service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.itb.projeto.pizzaria3e.model.entity.Categoria;
 import br.itb.projeto.pizzaria3e.model.entity.Produto;
+import br.itb.projeto.pizzaria3e.model.entity.Usuario;
 import br.itb.projeto.pizzaria3e.model.repository.CategoriaRepository;
 import br.itb.projeto.pizzaria3e.model.repository.ProdutoRepository;
 import jakarta.transaction.Transactional;
@@ -79,6 +82,17 @@ public class ProdutoService {
 	}
 	
 	@Transactional
+	public boolean deletarProduto(long id) {
+		if (produtoRepository.existsById(id)) {
+			produtoRepository.deleteById(id);
+			return true;
+		}
+		return false;
+	}
+
+	
+	
+	@Transactional
 	public Produto createComFoto(MultipartFile file, Produto produto) {
 		
 		if (file != null && file.getSize() > 0) {
@@ -100,7 +114,7 @@ public class ProdutoService {
 			}
 		}
 		
-		return produtoRepository.save(produto);
+		return produtoRepository.save(produto);	
 	}
 	
 	@Transactional
@@ -124,6 +138,10 @@ public class ProdutoService {
 		
 		return null;
 	}
+	
+	
+	
+	
 	
 	@Transactional
 	public Produto updateComFoto(long id, MultipartFile file, Produto produtoAtualizado) {

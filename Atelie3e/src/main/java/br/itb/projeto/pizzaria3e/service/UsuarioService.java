@@ -258,6 +258,28 @@ public class UsuarioService {
 	}
 	
 	@Transactional
+	public Usuario editarUsuario(long id, Usuario dadosAtualizados) {
+		Optional<Usuario> optionalUsuario = usuarioRepository.findById(id);
+
+		if (optionalUsuario.isPresent()) {
+			Usuario usuarioExistente = optionalUsuario.get();
+
+			// Atualizar campos permitidos
+			usuarioExistente.setNome(dadosAtualizados.getNome());
+			usuarioExistente.setTelefone(dadosAtualizados.getTelefone());
+			usuarioExistente.setEmail(dadosAtualizados.getEmail());
+			usuarioExistente.setRespostaSeguranca(dadosAtualizados.getRespostaSeguranca());
+
+			// Não atualizar senha ou status aqui!
+
+			return usuarioRepository.save(usuarioExistente);
+		}
+
+		return null;
+	}
+
+	
+	@Transactional
 	public Usuario resetSenhaSimples(String email, String resposta, String novaSenha) {
 		if (validarResposta(email, resposta)) {
 			Usuario usuario = usuarioRepository.findByEmail(email);
